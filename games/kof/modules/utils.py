@@ -25,13 +25,21 @@ def draw_lifebar(screen, role1, role2, location):
 
 def load_background(root):
     bg = []
-    for file in os.listdir(root):
-        bg.append(pygame.image.load(os.path.join(root, file)))
+    for file in sorted(os.listdir(root)):
+        path = os.path.join(root, file)
+        if os.path.isfile(path):
+            bg.append(pygame.image.load(path))
     return bg
 
 
 def draw_background(screen, bg_imgs, frame):
-    screen.blit(pygame.transform.scale(bg_imgs[(frame // 2 + frame % 2) % len(bg_imgs)], (600, 400)), [0, 0])
+    screen.blit(
+        pygame.transform.scale(
+            bg_imgs[(frame // 2 + frame % 2) % len(bg_imgs)],
+            screen.get_size(),
+        ),
+        [0, 0],
+    )
 
 
 def show_result_screen(screen, winner):

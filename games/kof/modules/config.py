@@ -81,13 +81,13 @@ ROLE_DEFENCE_ABILITY = {
 
 
 class Config:
-    def __init__(self, role_name, is_player1):
+    def __init__(self, role_name, is_player1, assets_dir='assets'):
         # screen settings
         self.screen_width = SCREEN_WIDTH
         self.screen_height = SCREEN_HEIGHT
 
         # image location
-        self.image_path = os.path.join('assets', 'roles', role_name)
+        self.image_path = os.path.join(assets_dir, 'roles', role_name)
 
         # role settings
         self.initial_pos = ROLE_INITIAL_POSITIONS[role_name]

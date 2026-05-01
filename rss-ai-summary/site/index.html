@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Daily Feed TLDR</title>
+    <style>
+      :root {
+        --bg: #f4f4f5;
+        --surface: #ffffff;
+        --border: #e4e4e7;
+        --text: #18181b;
+        --muted: #71717a;
+        --accent: #2563eb;
+        --accent-bg: #dbeafe;
+        --topic-accent: #b45309;
+        --topic-bg: #fef3c7;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #09090b;
+          --surface: #18181b;
+          --border: #27272a;
+          --text: #fafafa;
+          --muted: #a1a1aa;
+          --accent: #60a5fa;
+          --accent-bg: #1e3a5f;
+          --topic-accent: #fbbf24;
+          --topic-bg: #3f2d12;
+        }
+      }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body {
+        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        font-size: 15px;
+        line-height: 1.5;
+      }
+      a { color: var(--accent); text-decoration: none; }
+      a:hover { text-decoration: underline; }
+      .shell { max-width: 960px; margin: 0 auto; padding: 40px 20px 80px; }
+      .page-hd {
+        padding-bottom: 24px;
+        margin-bottom: 28px;
+        border-bottom: 1px solid var(--border);
+      }
+      .page-hd h1 {
+        font-size: 1.6rem;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        margin-bottom: 4px;
+      }
+      .page-hd p { color: var(--muted); font-size: 0.88rem; }
+      .topic-note { margin-top: 10px; max-width: 760px; line-height: 1.6; }
+      .stats { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 36px; }
+      .stat {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 8px 14px;
+      }
+      .stat-label {
+        font-size: 0.68rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+        color: var(--muted);
+        margin-bottom: 2px;
+      }
+      .stat-value { font-size: 0.9rem; font-weight: 600; }
+      .category { margin-bottom: 44px; }
+      .category h2 {
+        font-size: 0.68rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--muted);
+        padding-bottom: 8px;
+        margin-bottom: 14px;
+        border-bottom: 1px solid var(--border);
+      }
+      .feed-list,
+      .paper-list { display: grid; gap: 10px; }
+      .feed {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 14px 16px;
+        display: grid;
+        grid-template-columns: minmax(0, 220px) minmax(0, 1fr) auto;
+        gap: 12px;
+        align-items: start;
+      }
+      .paper {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 14px 16px;
+        display: grid;
+        grid-template-columns: minmax(0, 260px) minmax(0, 1fr) minmax(0, 180px);
+        gap: 12px;
+        align-items: start;
+      }
+      .paper-priority { box-shadow: inset 3px 0 0 var(--topic-accent); }
+      .feed-line {
+        display: contents;
+      }
+      .feed-title,
+      .paper-title { font-size: 0.95rem; font-weight: 600; line-height: 1.45; }
+      .feed-title a,
+      .paper-title a { color: var(--text); }
+      .feed-title a:hover,
+      .paper-title a:hover { color: var(--accent); text-decoration: none; }
+      .feed-meta {
+        font-size: 0.78rem;
+        color: var(--muted);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        white-space: nowrap;
+      }
+      .paper-meta {
+        font-size: 0.78rem;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+      .topic-badges { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+      .topic-badge {
+        font-size: 0.68rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        padding: 3px 8px;
+        border-radius: 999px;
+        background: var(--topic-bg);
+        color: var(--topic-accent);
+      }
+      .rss-badge {
+        font-size: 0.68rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        padding: 3px 7px;
+        border-radius: 4px;
+        background: var(--accent-bg);
+        color: var(--accent);
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+      .rss-badge:hover { text-decoration: none; opacity: 0.75; }
+      .tldr {
+        font-size: 0.85rem;
+        color: var(--muted);
+        line-height: 1.65;
+        margin: 0;
+      }
+      .errors {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 18px;
+        margin-top: 28px;
+      }
+      .errors h2 { font-size: 0.88rem; font-weight: 600; color: #dc2626; margin-bottom: 10px; }
+      .errors ul { padding-left: 18px; font-size: 0.84rem; }
+      .errors li { margin-bottom: 6px; }
+      .empty {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 48px 32px;
+        text-align: center;
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+      .empty p + p { margin-top: 6px; }
+      @media (max-width: 600px) {
+        .shell { padding: 20px 14px 60px; }
+        .page-hd h1 { font-size: 1.3rem; }
+        .feed {
+          grid-template-columns: 1fr;
+          gap: 6px;
+        }
+        .paper {
+          grid-template-columns: 1fr;
+          gap: 6px;
+        }
+        .feed-line { display: block; }
+        .feed-meta { white-space: normal; }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="shell">
+      <header class="page-hd">
+        <h1>Daily Feed TLDR</h1>
+        <p>Daily AI TLDRs generated from your NetNewsWire OPML export and published with GitHub Actions.</p>
+
+      </header>
+
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-label">Updated</div>
+          <div class="stat-value">2026-04-30 00:00 UTC</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Feeds</div>
+          <div class="stat-value">1</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Items</div>
+          <div class="stat-value">2</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Model</div>
+          <div class="stat-value">mock-summary</div>
+        </div>
+      </div>
+
+
+        <section class="category">
+          <h2>Example</h2>
+          <div class="feed-list">
+    <article class="feed">
+      <div class="feed-line">
+        <div class="feed-title"><a href="https://example.com">Example Feed</a></div>
+        <p class="tldr">Example Feed has two sample items. Replace subscriptions.opml with your own export before running locally.</p>
+      </div>
+      <div class="feed-meta">
+        <span>2 items</span>
+        <a class="rss-badge" href="https://example.com/feed.xml">RSS</a>
+      </div>
+    </article>
+    </div>
+        </section>
+
+
+    </main>
+  </body>
+</html>

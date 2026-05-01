@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "feeds": {
+    "https://example.com/feed.xml": {
+      "seen_ids": [],
+      "last_checked_at": "2026-04-30T00:00:00+00:00",
+      "feed_title": "Example Feed",
+      "pending_items": [],
+      "site_url": "https://example.com",
+      "summary": {
+        "tldr": "",
+        "highlights": []
+      }
+    }
+  }
+}

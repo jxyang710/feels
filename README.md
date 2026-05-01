@@ -1,37 +1,26 @@
-# King of Fighters
+# Feels
 
-This repo is a simple implementation of the game "The King of Fighters (KOF)" using Python.
+Small personal projects and experiments.
 
-![kof](./assets/kof.jpg)
+## Projects
 
-## Environment
+### RSS AI Summary
 
-1. Clone this repo via:
-
-  ```bash
-  git clone https://github.com/jxyang710/King-of-Fighters.git
-  ```
-
-2. Install the necessary packages via:
-
-	```bash
-	pip install pygame
-	```
-
-## Execution
-
-Run the game via:
+`rss-ai-summary/` turns an OPML subscription file into a static RSS digest. It can run with a mock summarizer for local testing, or with an LLM provider for real summaries.
 
 ```bash
-cd King-of-Fighters
-python game.py
+cd rss-ai-summary
+python3 -m venv .venv
+.venv/bin/pip install -r requirements.txt
+.venv/bin/python src/main.py --mock-summary
 ```
 
-## TODO List
+### KOF Game
 
-- [ ] more actions and combos to be implemented.
-- [ ] more roles and backgrounds to be added.
+`games/kof/` is a small Python/Pygame fighting game demo.
 
-## Acknowledgement
-
-All images used in this project were obtained from [here](https://www.aigei.com/).
+```bash
+cd games/kof
+pip install -r requirements.txt
+python game.py
+```

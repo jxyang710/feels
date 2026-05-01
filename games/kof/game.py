@@ -3,18 +3,22 @@ import pygame
 
 from modules.config import SCREEN_WIDTH, SCREEN_HEIGHT, Config
 from modules.role import Role
-from modules.utils import *
+from modules.utils import draw_background, draw_lifebar, load_background, quit_game, show_result_screen
 
 
 pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("King of Fighters")
+clock = pygame.time.Clock()
 
-bg = load_background(os.path.join('assets', 'background'))
-role1_config = Config('kyo', True)
-role1 = Role('kyo', False, role1_config)
-role2_config = Config('chris', False)
-role2 = Role('chris', True, role2_config)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+ASSETS_DIR = os.path.join(BASE_DIR, "assets")
+
+bg = load_background(os.path.join(ASSETS_DIR, "background"))
+role1_config = Config("kyo", True, ASSETS_DIR)
+role1 = Role("kyo", False, role1_config)
+role2_config = Config("chris", False, ASSETS_DIR)
+role2 = Role("chris", True, role2_config)
 
 cur_key = None
 frame = 0
@@ -49,4 +53,4 @@ while True:
         pygame.time.wait(2000)
         quit_game()
 
-    pygame.time.Clock().tick(30)
+    clock.tick(30)

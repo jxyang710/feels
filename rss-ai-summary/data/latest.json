@@ -1,0 +1,45 @@
+{
+  "site_title": "Daily Feed TLDR",
+  "generated_at": "2026-04-30T00:00:00+00:00",
+  "generated_at_human": "2026-04-30 00:00 UTC",
+  "model": "mock-summary",
+  "summary_language": "English",
+  "total_feeds": 1,
+  "feeds_with_updates": 1,
+  "total_items": 2,
+  "feeds": [
+    {
+      "category": "Example",
+      "title": "Example Feed",
+      "site_url": "https://example.com",
+      "feed_url": "https://example.com/feed.xml",
+      "item_count": 2,
+      "skipped_count": 0,
+      "tldr": "Example Feed has two sample items. Replace subscriptions.opml with your own export before running locally.",
+      "highlights": [
+        "Sample item one",
+        "Sample item two"
+      ],
+      "items": [
+        {
+          "title": "Sample item one",
+          "link": "https://example.com/posts/one",
+          "published": "2026-04-30 00:00 UTC",
+          "source_kind": "feed",
+          "tldr": "Short sample summary for the first item."
+        },
+        {
+          "title": "Sample item two",
+          "link": "https://example.com/posts/two",
+          "published": "2026-04-29 00:00 UTC",
+          "source_kind": "feed",
+          "tldr": "Short sample summary for the second item."
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "categories": [
+    "Example"
+  ]
+}

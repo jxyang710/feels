@@ -27,9 +27,11 @@ class Role:
 
     def load_images(self, root):
         action2images, action2images_reverse, action_len, action_img_size = {}, {}, {}, {}
-        for dir in os.listdir(root):
+        for dir in sorted(os.listdir(root)):
             images, images_reverse = [], []
             subroot = os.path.join(root, dir)
+            if not os.path.isdir(subroot):
+                continue
             for file in sorted(os.listdir(subroot)):
                 img = pygame.image.load(os.path.join(subroot, file))
                 action_img_size[dir] = img.get_size()
@@ -44,9 +46,13 @@ class Role:
     def process_key(self, event):
         if event.key in self.cfg.key_mapping:
             if event.type == pygame.KEYDOWN:
-                self.keys_to_handle.append(self.cfg.key_mapping[event.key])
+                key = self.cfg.key_mapping[event.key]
+                if key not in self.keys_to_handle:
+                    self.keys_to_handle.append(key)
             elif event.type == pygame.KEYUP:
-                self.keys_to_handle.remove(self.cfg.key_mapping[event.key])
+                key = self.cfg.key_mapping[event.key]
+                if key in self.keys_to_handle:
+                    self.keys_to_handle.remove(key)
 
 
     def is_state_stoppable(self):
